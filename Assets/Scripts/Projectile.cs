@@ -13,6 +13,11 @@ public class Projectile : MonoBehaviour
         rigidbody2d = GetComponent<Rigidbody2D>();
     }
 
+    void Start()
+    {
+        Destroy(gameObject, 2.0f); // Destroi após 2 segundos automaticamente
+    }
+
     void Update()
     {
         if (transform.position.magnitude > 100.0f)

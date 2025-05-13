@@ -26,8 +26,12 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     Vector2 moveDirection = new Vector2(1, 0);
 
-    // // Variables related to Projectile
+    // Variables related to Projectile
     public GameObject projectilePrefab;
+
+    // Variables related to audio
+    AudioSource audioSource;
+
 
 
     // Start is called before the first frame update
@@ -37,6 +41,7 @@ public class PlayerController : MonoBehaviour
         rigidbody2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
 
@@ -67,20 +72,16 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-
         if (Input.GetKeyDown(KeyCode.C))
         {
             Launch();
         }
 
-
         if (Input.GetKeyDown(KeyCode.X))
         {
-           FindFriend();
+            FindFriend();
         }
     }
-
-
 
 
     // FixedUpdate has the same call rate as the physics system 
@@ -89,7 +90,6 @@ public class PlayerController : MonoBehaviour
         Vector2 position = (Vector2)rigidbody2d.position + move * speed * Time.deltaTime;
         rigidbody2d.MovePosition(position);
     }
-
 
 
     public void ChangeHealth(int amount)
@@ -106,7 +106,9 @@ public class PlayerController : MonoBehaviour
         }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         UIHandler.instance.SetHealthValue(currentHealth / (float)maxHealth);
+        Debug.Log(currentHealth / (float)maxHealth);
     }
+
 
 
     void Launch()
@@ -116,6 +118,7 @@ public class PlayerController : MonoBehaviour
         projectile.Launch(moveDirection, 300);
         animator.SetTrigger("Launch");
     }
+
 
 
     void FindFriend()
@@ -130,6 +133,11 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    
-    
+
+
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
+    }
+
 }
